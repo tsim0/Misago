@@ -1,6 +1,6 @@
 {% load i18n misago_avatars %}
 <div id="post-{{ post.pk }}" class="post-fragment"></div>
-<div class="media post thread-post{% if post.poster_id and post.poster.rank.css_class %} rank-{{ post.poster.rank.css_class }}{% endif %}" data-id="{{ post.pk }}" data-edit-url="{{ post.get_edit_url }}" data-quote-url="{{ post.get_quote_url }}" data-report-url="{{ post.get_report_url }}">
+<div class="media post thread-post{% if post.poster_id and post.poster.rank.css_class %} rank-{{ post.poster.rank.css_class }}{% endif %}" data-id="{{ post.pk }}" data-edit-url="{{ post.get_edit_url }}" data-quote-url="{{ post.get_quote_url }}" data-report-url="{{ post.get_report_url }}" data-reports-url="{{ post.get_reports_url }}">
   {% if post.poster %}
   <a class="user-avatar pull-left" href="{% url USER_PROFILE_URL user_slug=post.poster.slug user_id=post.poster.id %}">
     <img class="media-object" src="{{ post.poster|avatar:100 }}" alt="{% trans "Poster avatar" %}">
@@ -68,6 +68,12 @@
           <article class="post-body misago-markup">
             {{ post.parsed|safe }}
           </article>
+
+          <div class="post-reports">
+            {% if post.has_open_reports and thread.acl.can_see_reports %}
+              {% include "misago/thread/reports/show_reports_btn.html" %}
+            {% endif %}
+          </div>
         </div>
         {% else %}
         <div class="alert alert-danger">
@@ -75,8 +81,6 @@
           {% trans "Post can't be displayed due to invalid message checksum." %}
         </div>
         {% endif %}
-
-        <div class="post-reports"></div>
 
         <div class="panel-footer">
 

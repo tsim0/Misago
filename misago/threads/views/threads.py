@@ -53,6 +53,10 @@ class ReportPostView(generic.ReportPostView):
     pass
 
 
+class PostReportsView(generic.PostReportsView):
+    pass
+
+
 class EventsView(generic.EventsView):
     pass
 

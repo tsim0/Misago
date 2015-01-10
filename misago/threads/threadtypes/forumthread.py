@@ -107,6 +107,11 @@ class ForumThread(ThreadTypeBase):
             'post_id': post.id
         })
 
+    def get_post_reports_url(self, post):
+        return reverse('misago:post_reports', kwargs={
+            'post_id': post.id
+        })
+
     def get_event_edit_url(self, event):
         return reverse('misago:edit_event', kwargs={
             'event_id': event.id

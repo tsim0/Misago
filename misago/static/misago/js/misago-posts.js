@@ -60,6 +60,7 @@ $(function() {
 
     });
 
+    this.$reports = this.$e.find('.post-reports');
     this.$report = this.$e.find('.btn-report');
     this.$report.click(function() {
 
@@ -67,12 +68,39 @@ $(function() {
         Misago.ReportPost.open(_this, _this.$e.data('report-url'), function(data) {
           _this.$alerts.fadeTo(0, 0.2);
           _this.$alerts.html(data.alerts);
-          _this.$alerts.fadeIn();
+          _this.$alerts.fadeTo('fast', 1);
           _this.$report.attr('disabled', 'disabled');
           _this.$report.find('.btn-label').text(data.label);
+
+          if (data.button) {
+            _this.$reports.html(data.button);
+            _this.init_reports();
+          }
         });
       }
 
+    });
+
+    this.reports = null;
+    this.show_reports = function() {
+
+      if (!this.reports) {
+        this.$e.find('.btn-show-post-reports').fadeTo('fast', 0.2);
+        this.reports = new Misago.PostReports(this);
+      }
+
+    }
+
+    this.init_reports = function() {
+
+      this.$e.find('.btn-show-post-reports').click(function() {
+        _this.show_reports();
+      });
+
+    }
+
+    this.$e.find('.btn-show-post-reports').click(function() {
+      _this.show_reports();
     });
 
     this.quote = function() {

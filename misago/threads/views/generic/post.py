@@ -20,7 +20,8 @@ __all__ = [
     'UnhidePostView',
     'HidePostView',
     'DeletePostView',
-    'ReportPostView'
+    'ReportPostView',
+    'PostReportsView'
 ]
 
 
@@ -147,6 +148,7 @@ class ReportPostView(PostView):
 
     template = 'misago/thread/report_modal.html'
     alerts_template = 'misago/thread/post_alerts.html'
+    button_template = 'misago/thread/reports/show_reports_btn.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.is_ajax():
@@ -177,7 +179,8 @@ class ReportPostView(PostView):
                 return JsonResponse({
                     'message': message,
                     'label': _("Reported"),
-                    'alerts': self.render_alerts(request, post)
+                    'alerts': self.render_alerts(request, post),
+                    'button': self.render_button(request, post)
                 })
             else:
                 field_errors = form.errors.get('report_message')
@@ -197,4 +200,36 @@ class ReportPostView(PostView):
             'post': post
         }).content
 
+    def render_button(self, request, post):
+        if post.acl['can_see_reports']:
+            return render(request, self.button_template, {
+                'forum': post.forum,
+                'thread': post.thread,
+                'post': post
+            }).content
+        else:
+            return None
+
+
+class PostReportsView(ReportPostView):
+    template = 'misago/thread/reports/body.html'
+
+    def real_dispatch(self, request, post):
+        if not post.acl['can_see_reports']:
+            raise PermissionDenied(_("You can't see posts reports."))
+
+        if post.has_open_reports:
+            reports_count_qs = post.report_set.filter(is_closed=False)
+        else:
+            reports_count_qs = post.report_set
+
+        reports_qs = post.report_set.order_by('is_closed', '-id')
+
+        return self.render(request, {
+            'forum': post.forum,
+            'thread': post.thread,
+            'post': post,
+            'reports_count': reports_count_qs.count(),
+            'reports': reports_qs
+        })
 

@@ -1,0 +1,24 @@
+{% load i18n %}
+<div class="panel panel-default panel-reports">
+  <div class="panel-head">
+    <h4>
+      <span class="fa fa-exclamation-triangle fa-fw fa-lg"></span>
+      {% if post.has_open_reports %}
+        {% blocktrans trimmed count reports=reports_count %}
+        {{ reports }} open report
+        {% plural %}
+        {{ reports }} open reports
+        {% endblocktrans %}
+      {% else %}
+        {% blocktrans trimmed count reports=reports_count %}
+        {{ reports }} report
+        {% plural %}
+        {{ reports }} reports
+        {% endblocktrans %}
+      {% endif %}
+    </h4>
+  </div>
+  <div class="panel-body">
+    Reports list goes here
+  </div>
+</div>

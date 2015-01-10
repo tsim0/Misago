@@ -495,5 +495,10 @@ class ReportPostView(generic.ReportPostView):
 
 
 @private_threads_view
+class PostReportsView(generic.PostReportsView):
+    pass
+
+
+@private_threads_view
 class EventsView(PrivateThreadsMixin, generic.EventsView):
     pass

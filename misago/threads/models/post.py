@@ -111,6 +111,9 @@ class Post(models.Model):
     def get_report_url(self):
         return self.thread_type.get_post_report_url(self)
 
+    def get_reports_url(self):
+        return self.thread_type.get_post_reports_url(self)
+
     @property
     def short(self):
         if self.is_valid:

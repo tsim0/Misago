@@ -1,5 +1,0 @@
-include LICENSE.rst
-include README.rst
-recursive-include docs *
-recursive-exclude docs/build *
-recursive-include misago *

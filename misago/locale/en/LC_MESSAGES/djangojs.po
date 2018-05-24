@@ -2123,7 +2123,7 @@ msgid "Change subscription"
 msgstr ""
 
 #: static/misago/js/misago.js:18
-msgid "Start thread"
+msgid "Start a question"
 msgstr ""
 
 #: static/misago/js/misago.js:18
